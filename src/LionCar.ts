@@ -1,10 +1,8 @@
 import { LitElement, html, css, property } from 'lit-element';
-import { apolloClient} from './apollo/apollo-client';
-import gql from 'graphql-tag';
+import { openWcLogo } from './open-wc-logo.js';
 
-export class LionGarage extends LitElement {
-  @property({ type: String }) title = 'Lion Garage';
-  @property({ type: String }) cars = 'Lion Garage';
+export class LionCar extends LitElement {
+  @property({ type: String }) title = 'My app';
 
   static styles = css`
     :host {
@@ -18,7 +16,7 @@ export class LionGarage extends LitElement {
       max-width: 960px;
       margin: 0 auto;
       text-align: center;
-      background-color: var(--lion-garage-background-color);
+      background-color: var(--lion-car-background-color);
     }
 
     main {
@@ -49,31 +47,25 @@ export class LionGarage extends LitElement {
     }
   `;
 
-  constructor() {
-    super();
-    let query = gql`
-      query {
-        allCars {
-          model
-        }
-      }
-    `
-    apolloClient.query({query}).then((results) => {
-      this.cars = results.data.allCars.map((car: { model: string }) => car.model).join(', ');
-    });
-  }
-
   render() {
     return html`
       <main>
+        <div class="logo">${openWcLogo}</div>
         <h1>${this.title}</h1>
+
+        <p>Edit <code>src/LionCar.ts</code> and save to reload.</p>
+        <a
+          class="app-link"
+          href="https://open-wc.org/guides/developing-components/code-examples"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Code examples
+        </a>
       </main>
 
-      <h2>list of cars</h2>
-      ${this.cars}
-
       <p class="app-footer">
-        Made with love via
+        🚽 Made with love by
         <a
           target="_blank"
           rel="noopener noreferrer"
