@@ -19,7 +19,7 @@ module.exports = gql`
       year_model: Int!,
       price: Float!,
       licensed: Boolean!,
-      date_added: String
+      date_added: String!
     }
 
     type Query {
