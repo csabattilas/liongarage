@@ -5,14 +5,14 @@ import './LionShoppingCart';
 import './LionCar';
 import gql from 'graphql-tag';
 import {apolloClient} from './apollo/apollo-client';
-import {Vehicle} from './types';
+import {VehicleSummary} from './types';
 import {shoppingCart} from './utils/ShoppingCartService';
 import './icons/index';
 import '@lion/icon/define';
 
 @customElement('lion-garage')
 export class LionGarage extends LitElement {
-  @property() allCars?: Vehicle[] = [];
+  @property() vehicles?: VehicleSummary[] = [];
   @property() cartIds: string[] = [];
   @property() selectedCarId = '';
   @property() itemsInCart: number = 0;
@@ -57,7 +57,7 @@ export class LionGarage extends LitElement {
     super();
     let query = gql`
       query {
-        allCars {
+        allVehicles {
           id
           model
           make
@@ -68,11 +68,11 @@ export class LionGarage extends LitElement {
       }
     `
     apolloClient.query({query}).then((results) => {
-      this.allCars = results.data.allCars
+      this.vehicles = results.data.allVehicles
         .map((car: { model: string }) => ({
           ...car
         }))
-        .sort((a:Vehicle, b: Vehicle) => a.date_added <= b.date_added ? 1 : -1); // we could use Date transformation here but iso format helps comparing the string
+        .sort((a:VehicleSummary, b: VehicleSummary) => a.date_added <= b.date_added ? 1 : -1); // we could use Date transformation here but iso format helps comparing the string
     });
   }
 
@@ -99,12 +99,12 @@ export class LionGarage extends LitElement {
         <a slot="tab" aria-selected="true">
           <lion-icon icon-id="lion-garage:misc:car"></lion-icon>
         </a>
-        <lion-cars slot="panel" .cars=${this.allCars} @car-selected="${(e: CustomEvent) => this.selectedCarId = e.detail.id}"></lion-cars></p>
+        <lion-cars slot="panel" .cars=${this.vehicles} @car-selected="${(e: CustomEvent) => this.selectedCarId = e.detail.id}"></lion-cars></p>
         <a slot="tab">
           <lion-icon icon-id="lion-garage:misc:shoppingCart"></lion-icon>
           <span class="badge">${this.itemsInCart}</span>
         </a>
-        <lion-shopping-cart  slot="panel" .cars=${this.allCars} .ids="${this.cartIds}" @car-deleted-from-cart="${() => this._updateCartItems()}"></lion-shopping-cart></p>
+        <lion-shopping-cart  slot="panel" .cars=${this.vehicles} .ids="${this.cartIds}" @car-deleted-from-cart="${() => this._updateCartItems()}"></lion-shopping-cart></p>
       </lion-tabs>
       <p class="open-wc">
           made via

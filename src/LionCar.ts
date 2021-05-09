@@ -13,6 +13,13 @@ const query = gql`
         licensed
         year_model
         price
+        location {
+          warehouse {
+            long
+            lat
+          }
+          location
+        }
       }
     }
   `
@@ -74,9 +81,10 @@ export class LionCar extends LitElement {
           </button>
           <dl>
             <dt>${this.vehicle?.model}</dd>
-            <dd><label>Make:</label> ${this.vehicle?.make}</dt>
-            <dd><label>Year:</label> ${this.vehicle?.year_model}</dt>
-            <dd><label>Price:</label> ${this.vehicle?.price}</dt>
+            <dd><label>Make:</label> ${this.vehicle?.make}</dd>
+            <dd><label>Year:</label> ${this.vehicle?.year_model}</dd>
+            <dd><label>Price:</label> ${this.vehicle?.price}</dd>
+            <dd><label>Location in warehouse</label> long: ${this.vehicle?.location?.warehouse?.long}, lat:${this.vehicle?.location?.warehouse?.lat} <br>&nbsp; &nbsp;at ${this.vehicle?.location?.location}</dd>
           </dl>
           <button
             @click="${() => this._addToCart()}"

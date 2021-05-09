@@ -29,9 +29,21 @@ class CarsApi extends RESTDataSource {
   }
 
   async getVehicleById(id) {
-    const allCars = await this.getAllCars();
+    const response = await this.get(
+      'warehouses',
+    );
 
-    return allCars.find(vehicle => vehicle.id === +id);
+    return (Array.isArray(response)
+      ? response.reduce((acc, warehouse) => {
+        acc = acc.concat((((((warehouse || {}).cars || {}).vehicles || []).map(vehicle => ({...vehicle, location: {warehouse: warehouse.location, location: warehouse.cars.location }})) || []) // this is ugly (use typescript next time)
+            .map(( vehicle) => {
+              const { _id, ...vehicleNoId } = { ...vehicle, id: vehicle._id } // don't like the underscore on the _id nor wanted to change the source data
+              return vehicleNoId;
+            })
+        ));
+        return acc;
+      }, [])
+      : []).find(vehicle => vehicle.id === +id);
   }
 }
 

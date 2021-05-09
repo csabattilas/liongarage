@@ -1,6 +1,6 @@
 module.exports = {
     Query: {
-        allCars: (_, __, {dataSources}) =>
+        allVehicles: (_, __, {dataSources}) =>
             dataSources.carsApi.getAllCars(),
         vehicle: (_, {id}, {dataSources}) =>
           dataSources.carsApi.getVehicleById(id)

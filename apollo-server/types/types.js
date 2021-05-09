@@ -1,17 +1,6 @@
 const {gql} = require('apollo-server');
 
 module.exports = gql`
-    type Warehouse {
-      id: ID!,
-      name: String!,
-      cars: Cars!
-    }
-
-    type Cars {
-      location: String,
-      vehicles: [Vehicle]!
-    }
-
     type Vehicle {
       id:ID!,
       make: String!,
@@ -20,10 +9,30 @@ module.exports = gql`
       price: Float!,
       licensed: Boolean!,
       date_added: String!
+      location: Location!
+    }
+
+    type VehicleSummary {
+      id:ID!,
+      make: String!,
+      model: String!,
+      licensed: Boolean!,
+      date_added: String!
+      price: Float!
+    }
+
+    type MapLocation {
+      long: Float!
+      lat: Float!
+    }
+
+    type Location {
+      warehouse: MapLocation!
+      location: String!
     }
 
     type Query {
-        allCars: [Vehicle!]!,
+        allVehicles: [VehicleSummary!]!,
         vehicle(id: ID!): Vehicle!
     }
 `;

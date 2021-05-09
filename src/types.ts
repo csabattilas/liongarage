@@ -11,19 +11,6 @@ export type Scalars = {
   Float: number;
 };
 
-export type Warehouse = {
-  __typename?: 'Warehouse';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  cars: Cars;
-};
-
-export type Cars = {
-  __typename?: 'Cars';
-  location?: Maybe<Scalars['String']>;
-  vehicles: Array<Maybe<Vehicle>>;
-};
-
 export type Vehicle = {
   __typename?: 'Vehicle';
   id: Scalars['ID'];
@@ -33,5 +20,38 @@ export type Vehicle = {
   price: Scalars['Float'];
   licensed: Scalars['Boolean'];
   date_added: Scalars['String'];
+  location: Location;
 };
 
+export type VehicleSummary = {
+  __typename?: 'VehicleSummary';
+  id: Scalars['ID'];
+  make: Scalars['String'];
+  model: Scalars['String'];
+  licensed: Scalars['Boolean'];
+  date_added: Scalars['String'];
+  price: Scalars['Float'];
+};
+
+export type MapLocation = {
+  __typename?: 'MapLocation';
+  long: Scalars['Float'];
+  lat: Scalars['Float'];
+};
+
+export type Location = {
+  __typename?: 'Location';
+  warehouse: MapLocation;
+  location: Scalars['String'];
+};
+
+export type Query = {
+  __typename?: 'Query';
+  allVehicles: Array<VehicleSummary>;
+  vehicle: Vehicle;
+};
+
+
+export type QueryVehicleArgs = {
+  id: Scalars['ID'];
+};
