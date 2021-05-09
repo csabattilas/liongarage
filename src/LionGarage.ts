@@ -31,6 +31,10 @@ export class LionGarage extends LitElement {
       position: relative;
     }
 
+    [slot="tab"][selected="true"] {
+      background-color: #eee;
+    }
+
     a {
       color: var(--base-color);
     }
