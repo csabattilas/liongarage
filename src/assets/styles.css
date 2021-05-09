@@ -40,6 +40,7 @@ body {
   right: 1rem;
   border: none;
   cursor: pointer;
+  border: 1px solid var(--button-border-color);
 }
 
 .dialog button.add-to-cart {
@@ -52,7 +53,8 @@ body {
   font-size: var(--body-font-size);
 }
 
-.dialog button.add-to-cart:active {
+.dialog button.add-to-cart:active,
+.dialog .close-button:active{
   background: #eee;
 }
 
