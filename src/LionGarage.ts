@@ -122,16 +122,25 @@ export class LionGarage extends LitElement {
         @close-dialog="${(e:Event) => {this.selectedCarId = ''}}"
         @car-added-to-cart=${() => this._updateCart()}
       ></lion-car>
-      <lion-tabs @selected-changed="${(e: Event) => this._selectedTabChanged()}}" .selected="">
+      <lion-tabs @selected-changed="${(e: Event) => this._selectedTabChanged()}}">
         <a slot="tab" aria-selected="true">
           <lion-icon icon-id="lion-garage:misc:car"></lion-icon>
         </a>
-        <lion-cars slot="panel" .cars=${this.vehicles} @car-selected="${(e: CustomEvent) => this.selectedCarId = e.detail.id}"></lion-cars></p>
+        <lion-cars
+          slot="panel"
+          .cars=${this.vehicles}
+          @car-selected="${(e: CustomEvent) => this.selectedCarId = e.detail.id}"
+        ></lion-cars></p>
         <a slot="tab">
           <lion-icon icon-id="lion-garage:misc:shoppingCart"></lion-icon>
           <span class="badge">${this.itemsInCart}</span>
         </a>
-        <lion-shopping-cart  slot="panel" .cars=${this.vehicles} .ids="${this.cartIds}" @car-deleted-from-cart="${() => this._updateCartItems()}"></lion-shopping-cart></p>
+        <lion-shopping-cart
+          slot="panel"
+          .cars=${this.vehicles}
+          .ids="${this.cartIds}"
+          @update-cart="${() => this._updateCartItems()}"
+        ></lion-shopping-cart></p>
       </lion-tabs>
       <p class="open-wc">
           made via

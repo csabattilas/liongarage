@@ -40,6 +40,13 @@ class ShoppingCartService {
       }
     , 0);
   }
+
+  updateCount(id: string, value: number) {
+    const shoppingCart = this.shoppingCart;
+
+    shoppingCart[id] = value;
+    localStorage.setItem(ShoppingCartService.sKey, JSON.stringify(shoppingCart));
+  }
 }
 
 export const shoppingCart = new ShoppingCartService();

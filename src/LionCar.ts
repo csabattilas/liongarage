@@ -71,7 +71,10 @@ export class LionCar extends LitElement {
     return html`
       <lion-dialog .config=${{ placementMode: 'global' }}>
         ${this.id}
-        <button slot="invoker" style="display: none"></button>
+        <button
+          slot="invoker"
+          style="display: none"
+        ></button>
         <div slot="content" class="dialog">
           <button
             class="close-button"

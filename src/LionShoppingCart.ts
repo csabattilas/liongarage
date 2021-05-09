@@ -4,6 +4,7 @@ import '@lion/dialog/define';
 import './LionCar';
 import {shoppingCart} from './utils/ShoppingCartService';
 import {Big} from 'big.js';
+import {ChangeEvent} from 'rollup';
 
 @customElement('lion-shopping-cart')
 export class LionCars extends LitElement {
@@ -11,6 +12,8 @@ export class LionCars extends LitElement {
   @property() ids: string[] = [];
   @property() shoppingCartCars: Array<Vehicle> = [];
   @property() total?: number;
+
+  _updateEvent = new CustomEvent('update-cart', {bubbles: true});
 
   static styles = css`
     td,th {
@@ -85,6 +88,12 @@ export class LionCars extends LitElement {
     button.continue-to-checkout:active {
       background: #eee;
     }
+
+    input[type="number"] {
+      width: 50px;
+      text-align: right;
+      border: 1px solid var(--button-border-color);
+    }
   `;
 
   protected update(changedProperties: PropertyValues) {
@@ -98,16 +107,34 @@ export class LionCars extends LitElement {
     }
   }
 
+  _updateCount(e: Event, id: string) {
+    const value = (e.currentTarget as HTMLInputElement).value
+    if(Number(value) < 0 || value.indexOf('-') > -1 || !value) {
+      (e.currentTarget as HTMLInputElement).value = '0';
+    } else {
+      shoppingCart.updateCount(id, +value);
+      this.dispatchEvent(this._updateEvent);
+    }
+  }
+
+  _checkZeroCountForId(e: Event, id: string) {
+    const value = (e.currentTarget as HTMLInputElement).value
+
+    if(Number(value) === 0 || value.indexOf('-') > -1 || !value) {
+      this._delete(id);
+    }
+  }
+
   _getItemInCart(id: string) {
     return shoppingCart.getCartItems(id) // not sure about this performance todo check
   }
 
   _delete(id: string) {
+    console.log('delete');
     shoppingCart.deleteItemFromShoppingCart(id)
     this.ids = shoppingCart.getShoppingCartIds();
 
-    const deleteEvent = new CustomEvent('car-deleted-from-cart', {bubbles: true});
-    this.dispatchEvent(deleteEvent);
+    this.dispatchEvent(this._updateEvent);
   }
 
   render() {
@@ -125,7 +152,11 @@ export class LionCars extends LitElement {
           </tr>
           ${this.shoppingCartCars.map(car => html`
             <tr>
-              <td>${this._getItemInCart(car.id)}</td>
+              <td><input
+                type="number"
+                value="${this._getItemInCart(car.id)}"
+                @change="${(e:Event) => this._updateCount(e, car.id)}"
+                @blur="${(e:Event) => this._checkZeroCountForId(e, car.id)}"></td>
               <td>${car.model}</td>
               <td>${car.make}</td>
               <td class="price">${car.price}</td>

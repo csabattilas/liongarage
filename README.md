@@ -15,7 +15,6 @@ Tiny lit-element based app about a fictional garage
   
 #### Future improvements
 
-* Update count on shopping cart with number input
 * Add unit tests :D
 * Add progress indicators
 * Show car location on map
