@@ -21,7 +21,7 @@ export class LionCars extends LitElement {
       background: #f0f0f0; // todo add to the theme?
     }
 
-    tr:last-child {
+    tr:last-child td {
       background: #fff;
     }
 
@@ -70,6 +70,20 @@ export class LionCars extends LitElement {
 
     td:first-child.price {
       text-align: right;
+    }
+
+    button.continue-to-checkout {
+      background: transparent;
+      border: 1px solid var(--button-border-color);
+      font-size: var(--body-font-size);
+      padding: 1rem;
+      cursor: pointer;
+      display: block;
+      margin: 2rem auto;
+    }
+
+    button.continue-to-checkout:active {
+      background: #eee;
     }
   `;
 
@@ -127,7 +141,7 @@ export class LionCars extends LitElement {
             <td></td>
           </tr>
         </table>
-        <button click=${() => alert('to be continued to checkout ...')}>Continue to Checkout</button>` :
+        <button @click=${() => alert('to be continued to checkout ...')} class="continue-to-checkout">Continue to Checkout</button>` :
       html `<p>Your cart is empty</p>`}
       </main>
     `;

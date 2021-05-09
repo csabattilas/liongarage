@@ -61,16 +61,21 @@
       cursor: pointer;
     }
 
-    .dialog .add-to-cart-button {
+    .dialog button.add-to-cart {
       background: transparent;
       border: 1px solid var(--button-border-color);
       cursor: pointer;
       padding: 0.5rem 1rem;
       margin: 0 auto;
       display: block;
+      font-size: var(--body-font-size);
     }
 
-    .dialog .add-to-cart-button lion-icon {
+    .dialog button.add-to-cart:active {
+      background: #eee;
+    }
+
+    .dialog button.add-to-cart lion-icon {
       margin-right: 0.5rem;
     }
 

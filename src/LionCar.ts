@@ -80,7 +80,7 @@ export class LionCar extends LitElement {
           </dl>
           <button
             @click="${() => this._addToCart()}"
-            class="add-to-cart-button"
+            class="add-to-cart"
           >
             <lion-icon icon-id="lion-garage:misc:shoppingCart"></lion-icon>
                 add to cart
