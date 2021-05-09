@@ -35,8 +35,3 @@ export type Vehicle = {
   date_added: Scalars['String'];
 };
 
-export type Query = {
-  __typename?: 'Query';
-  allCars: Array<Vehicle>;
-  warehouses: Array<Warehouse>;
-};
