@@ -16,6 +16,7 @@ Tiny lit-element based app about a fictional garage
 #### Future improvements
 
 * Update count on shopping cart
+* Update url on tab changes  
 * Build production script
 * Add unit tests :D
 * Add progress indicators
