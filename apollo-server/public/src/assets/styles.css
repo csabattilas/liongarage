@@ -1,0 +1,65 @@
+:root {
+  /* theme - colors */
+  --lion-garage-background-color: white;
+
+  /* theme typography */
+  --viewport-min-to-add: 0.5vmin;
+  --body-font-size: calc(0.8rem + var(--viewport-min-to-add));
+  --caption-font-size: calc(var(--body-font-size) * 0.4 + var(--viewport-min-to-add));
+  --heading-font-size: calc(var(--body-font-size) * 1.2 + var(--viewport-min-to-add));
+
+  --base-color: #444;
+
+  /* buttons */
+  --button-border-color: #aaa;
+  --button-background-color: #fff; // todo colors to be named and used as design tokens;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: var(--lion-garage-background-color);
+  font-size: var(--body-font-size);
+  color: var(--base-color);
+}
+
+
+/* dialog */
+.dialog {
+  background-color: var(--lion-garage-background-color);
+  padding: 1rem 4rem;
+  font-size: var(--body-font-size);
+  position: relative;
+}
+
+.dialog .close-button {
+  background: transparent;
+  position: absolute;
+  right: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.dialog button.add-to-cart {
+  background: transparent;
+  border: 1px solid var(--button-border-color);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  margin: 0 auto;
+  display: block;
+  font-size: var(--body-font-size);
+}
+
+.dialog button.add-to-cart:active {
+  background: #eee;
+}
+
+.dialog button.add-to-cart lion-icon {
+  margin-right: 0.5rem;
+}
+
+.dialog label {
+  font-weight: bold;
+}

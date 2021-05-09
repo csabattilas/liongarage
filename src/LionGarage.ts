@@ -28,6 +28,7 @@ export class LionGarage extends LitElement {
     [slot="tab"] {
       padding: 0.5rem 1rem;
       cursor: pointer;
+      position: relative;
     }
 
     a {
@@ -46,10 +47,13 @@ export class LionGarage extends LitElement {
       font-size: var(--caption-font-size);
       color: #fff;
       border-radius: 0.5rem;
-      position: relative;
-      top: -0.8rem;
-      left: -0.5rem;
+      position: absolute;
+      display: block;
       padding: 0.1rem;
+      min-width: 14px;
+      text-align: center;
+      top: 3px;
+      right: 5px;
     }
   `
 

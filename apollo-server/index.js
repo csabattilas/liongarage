@@ -17,6 +17,7 @@ const apolloServer = new ApolloServer({
 const staticServer = express();
 
 staticServer.use('/warehouses', express.static(path.join(__dirname, 'static', 'warehouses.json')));
+staticServer.use('/public', express.static(path.join(__dirname, 'public')));
 
 staticServer.listen(3001, () => {
   console.log(`🚀  Static Server ready`);

@@ -49,3 +49,9 @@ Run `npm start`
 ### Development location
 
 Open [localhost:8000](http://localhost:8000)
+
+## Production 
+
+For testing purposes the build will move the rollup output under the apollo-server and will serve the files from the same static express as the json file.
+
+Run `npm run build` then navigate to [localhost:3001/public](http://localhost:3001/public)
