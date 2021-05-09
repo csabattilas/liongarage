@@ -1,30 +1,49 @@
-<p align="center">
-  <img width="200" src="https://open-wc.org/hero.png"></img>
-</p>
+# Lion Garage
 
-## Open-wc Starter App
+Tiny lit-element based app about a fictional garage
 
-[![Built with open-wc recommendations](https://img.shields.io/badge/built%20with-open--wc-blue.svg)](https://github.com/open-wc)
+### Features
 
-## Quickstart
+* Cars:
+  * Show cars from the garage ordered by the date they were added in the garage
+  * Present car details in a modal dialog
+  * Add a car to shopping cart
 
-To get started:
+* Shopping cart:
+  * Show cars from shopping cart
+  * Delete cars from shopping cart 
+  
+#### Future improvements
 
-```sh
-npm init @open-wc
-# requires node 10 & npm 6 or higher
-```
+* Update count on shopping cart
+* Build production script
+* Add unit tests :D
+* Add progress indicators
+* Show car location
+* Create own theme by extending @lion components
+* Dockerize or deploy to AWS.
 
-## Scripts
+## Install
 
-- `start` runs your app for development, reloading on file changes
-- `start:build` runs your app after it has been built using the build command
-- `build` builds your app and outputs it in your `dist` directory
-- `test` runs your test suite with Web Test Runner
-- `lint` runs the linter for your project
+Run `npm i`.
 
-## Tooling configs
+The used npm version is `6.13.4`.
 
-For most of the tools, the configuration is in the `package.json` to reduce the amount of files in your project.
+## Run development
 
-If you customize the configuration a lot, you can consider moving them to individual files.
+Obs: 
+* Development was conducted using node `v14.16.1` with npm `6.14.22`. I recommend using the same for node at least.
+* The testing browser was Chrome v90.
+Run client and server in separate terminal windows.
+
+### Run server
+
+Run `npm run start-server`.
+
+### Run client
+
+Run `npm start`
+
+### Development location
+
+Open [localhost:8000](http://localhost:4200)
