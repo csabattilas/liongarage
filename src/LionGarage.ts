@@ -1,4 +1,4 @@
-import {LitElement, html, css, property, customElement} from 'lit-element';
+import {LitElement, html, css, property, customElement, PropertyValues} from 'lit-element';
 import '@lion/tabs/define';
 import './LionCars';
 import './LionShoppingCart';
@@ -9,6 +9,7 @@ import {VehicleSummary} from './types';
 import {shoppingCart} from './utils/ShoppingCartService';
 import './icons/index';
 import '@lion/icon/define';
+import {LionTabs} from '@lion/tabs';
 
 @customElement('lion-garage')
 export class LionGarage extends LitElement {
@@ -93,6 +94,24 @@ export class LionGarage extends LitElement {
     this.itemsInCart = shoppingCart.getTotalItems();
   }
 
+  _selectedTabChanged() {
+    const selectedTab = (this.shadowRoot?.querySelector('lion-tabs') as LionTabs).__selectedIndex;
+
+    window.location.hash = selectedTab + '';
+  }
+
+  protected firstUpdated(changedProperties: PropertyValues) {
+    super.firstUpdated(changedProperties);
+
+    const lionTabs = (this.shadowRoot?.querySelector('lion-tabs') as LionTabs)
+
+    if(lionTabs && window.location.hash) {
+      lionTabs.__selectedIndex = +window.location.hash.replace('#','');
+    } else if(lionTabs) {
+      this._selectedTabChanged();
+    }
+  }
+
   render() {
     this.cartIds = shoppingCart.getShoppingCartIds();
     this.itemsInCart = shoppingCart.getTotalItems();
@@ -103,7 +122,7 @@ export class LionGarage extends LitElement {
         @close-dialog="${(e:Event) => {this.selectedCarId = ''}}"
         @car-added-to-cart=${() => this._updateCart()}
       ></lion-car>
-      <lion-tabs>
+      <lion-tabs @selected-changed="${(e: Event) => this._selectedTabChanged()}}" .selected="">
         <a slot="tab" aria-selected="true">
           <lion-icon icon-id="lion-garage:misc:car"></lion-icon>
         </a>
