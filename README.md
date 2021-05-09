@@ -48,4 +48,4 @@ Run `npm start`
 
 ### Development location
 
-Open [localhost:8000](http://localhost:4200)
+Open [localhost:8000](http://localhost:8000)
