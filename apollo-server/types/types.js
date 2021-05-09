@@ -24,6 +24,6 @@ module.exports = gql`
 
     type Query {
         allCars: [Vehicle!]!,
-        warehouses: [Warehouse!]!
+        vehicle(id: ID!): Vehicle!
     }
 `;

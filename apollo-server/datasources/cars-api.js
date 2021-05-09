@@ -18,10 +18,20 @@ class CarsApi extends RESTDataSource {
     return Array.isArray(response)
       ? response.reduce((acc, warehouse) => {
         acc = acc.concat(((((warehouse || {}).cars || {}).vehicles || [])
-          .map(vehicle => ({...vehicle, id:vehicle._id})))); // don't like the underscore on the _id nor wanted to change the source data
+          .map(( vehicle) => {
+           const { _id, ...vehicleNoId } = { ...vehicle, id: vehicle._id } // don't like the underscore on the _id nor wanted to change the source data
+           return vehicleNoId;
+          })
+        ));
         return acc;
       }, [])
       : [];
+  }
+
+  async getVehicleById(id) {
+    const allCars = await this.getAllCars();
+
+    return allCars.find(vehicle => vehicle.id === +id);
   }
 }
 
