@@ -48,8 +48,13 @@ Run `npm start`
 
 Open [localhost:8000](http://localhost:8000)
 
-## Production 
+### Run lint & format
 
+Run `npm run lint`
+
+Run `npm run format`
+
+## Production 
 
 For testing purposes the build will move the rollup output under the apollo-server and will serve the files from the same static express as the json file.
 
