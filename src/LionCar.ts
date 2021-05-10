@@ -69,13 +69,15 @@ export class LionCar extends LitElement {
     e.target?.dispatchEvent(new Event('close-overlay', { bubbles: true }));
   }
 
-  _addToCart() {
+  _addToCart(e: MouseEvent) {
     shoppingCart.addToShoppingCart(this.id);
 
     const addToCartEvent = new CustomEvent('car-added-to-cart', {
       bubbles: true,
     });
     this.dispatchEvent(addToCartEvent);
+
+    this._closeDialog(e);
   }
 
   render() {
@@ -105,7 +107,7 @@ export class LionCar extends LitElement {
     } <br>&nbsp; &nbsp;at ${this.vehicle?.location?.location}</dd>
           </dl>
           <button
-            @click="${() => this._addToCart()}"
+            @click="${(e: MouseEvent) => this._addToCart(e)}"
             class="add-to-cart"
           >
             <lion-icon icon-id="lion-garage:misc:shoppingCart"></lion-icon>

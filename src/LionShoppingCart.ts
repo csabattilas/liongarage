@@ -16,10 +16,6 @@ import { Vehicle } from './types.js';
 export class LionCars extends LitElement {
   @property() cars: Array<Vehicle> = [];
 
-  @property() ids: string[] = [];
-
-  @property() shoppingCartCars: Array<Vehicle> = [];
-
   @property() total?: number;
 
   _updateEvent = new CustomEvent('update-cart', { bubbles: true });
@@ -60,10 +56,6 @@ export class LionCars extends LitElement {
       text-align: center;
     }
 
-    td:first-child {
-      width: 50px;
-    }
-
     td button {
       border: none;
       line-height: 1rem;
@@ -98,42 +90,15 @@ export class LionCars extends LitElement {
     button.continue-to-checkout:active {
       background: #eee;
     }
-
-    input[type='number'] {
-      width: 50px;
-      text-align: right;
-      border: 1px solid var(--button-border-color);
-    }
   `;
 
   protected update(changedProperties: PropertyValues) {
     super.update(changedProperties);
 
-    if (changedProperties.get('ids')) {
-      this.shoppingCartCars = this.cars.filter((car: Vehicle) =>
-        this.ids.includes(car.id)
-      );
-      this.total = this.shoppingCartCars
+    if (changedProperties.get('cars')) {
+      this.total = this.cars
         .reduce((acc, car) => acc.plus(car.price), new Big(0))
         .toNumber();
-    }
-  }
-
-  _updateCount(e: Event, id: string) {
-    const { value } = e.currentTarget as HTMLInputElement;
-    if (Number(value) < 0 || value.indexOf('-') > -1 || !value) {
-      (e.currentTarget as HTMLInputElement).value = '0';
-    } else {
-      shoppingCart.updateCount(id, +value);
-      this.dispatchEvent(this._updateEvent);
-    }
-  }
-
-  _checkZeroCountForId(e: Event, id: string) {
-    const { value } = e.currentTarget as HTMLInputElement;
-
-    if (Number(value) === 0 || value.indexOf('-') > -1 || !value) {
-      this._delete(id);
     }
   }
 
@@ -141,8 +106,6 @@ export class LionCars extends LitElement {
 
   _delete(id: string) {
     shoppingCart.deleteItemFromShoppingCart(id);
-    this.ids = shoppingCart.getShoppingCartIds();
-
     this.dispatchEvent(this._updateEvent);
   }
 
@@ -150,26 +113,16 @@ export class LionCars extends LitElement {
     return html`
       <main>
         <h1>Shopping cart</h1>
-        ${this.shoppingCartCars?.length
+        ${this.cars?.length
           ? html`<table>
                 <tr>
-                  <th>Count</th>
                   <th>Model</th>
                   <th>Make</th>
                   <th>Price</th>
                   <th></th>
                 </tr>
-                ${this.shoppingCartCars.map(
+                ${this.cars.map(
                   car => html` <tr>
-                    <td>
-                      <input
-                        type="number"
-                        .value="${this._getItemInCart(car.id)}"
-                        @change="${(e: Event) => this._updateCount(e, car.id)}"
-                        @blur="${(e: Event) =>
-                          this._checkZeroCountForId(e, car.id)}"
-                      />
-                    </td>
                     <td>${car.model}</td>
                     <td>${car.make}</td>
                     <td class="price">${car.price.toLocaleString()}</td>
@@ -181,8 +134,10 @@ export class LionCars extends LitElement {
                   </tr>`
                 )}
                 <tr>
-                  <td colspan="3" class="price">Total:</td>
-                  <td class="price"><strong>${this.total?.toLocaleString()}</strong></td>
+                  <td colspan="2" class="price">Total:</td>
+                  <td class="price">
+                    <strong>${this.total?.toLocaleString()}</strong>
+                  </td>
                   <td></td>
                 </tr>
               </table>

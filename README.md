@@ -18,7 +18,7 @@ Tiny lit-element based app about a fictional garage
 * Add unit tests :D
 * Add progress indicators
 * Show car location on map
-* Maybe use some api to fetch image using car data.  
+* Maybe use some api to fetch image using car data.
 * Create own theme by extending @lion components
 * Dockerize or deploy to AWS.
 

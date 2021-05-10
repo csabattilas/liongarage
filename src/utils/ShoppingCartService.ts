@@ -36,7 +36,7 @@ class ShoppingCartService {
   addToShoppingCart(id: string) {
     const { shoppingCart } = this;
 
-    shoppingCart[id] = shoppingCart[id] ? shoppingCart[id] + 1 : 1;
+    shoppingCart[id] = 1;
     localStorage.setItem(
       ShoppingCartService.sKey,
       JSON.stringify(shoppingCart)
@@ -47,16 +47,6 @@ class ShoppingCartService {
     return Object.keys(this.shoppingCart).reduce(
       (acc, item) => acc + this.shoppingCart[item],
       0
-    );
-  }
-
-  updateCount(id: string, value: number) {
-    const { shoppingCart } = this;
-
-    shoppingCart[id] = value;
-    localStorage.setItem(
-      ShoppingCartService.sKey,
-      JSON.stringify(shoppingCart)
     );
   }
 }

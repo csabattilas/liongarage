@@ -20,9 +20,11 @@ import '@lion/icon/define';
 
 @customElement('lion-garage')
 export class LionGarage extends LitElement {
-  @property() vehicles?: VehicleSummary[] = [];
+  @property() vehicles: VehicleSummary[] = [];
 
-  @property() cartIds: string[] = [];
+  @property() vehiclesToCart: VehicleSummary[] = [];
+
+  @property() vehiclesToSell: VehicleSummary[] = [];
 
   @property() selectedCarId = '';
 
@@ -94,12 +96,30 @@ export class LionGarage extends LitElement {
         .sort((a: VehicleSummary, b: VehicleSummary) =>
           a.date_added <= b.date_added ? 1 : -1
         ); // we could use Date transformation here but iso format helps comparing the string
+
+      const cartIds = shoppingCart.getShoppingCartIds();
+
+      this.vehiclesToSell = this.vehicles.filter(
+        vehicle => !cartIds.includes(vehicle.id)
+      );
+      this.vehiclesToCart = this.vehicles.filter(vehicle =>
+        cartIds.includes(vehicle.id)
+      );
     });
   }
 
   _updateCart() {
-    this.cartIds = shoppingCart.getShoppingCartIds();
+    const cartIds = shoppingCart.getShoppingCartIds();
     this.itemsInCart = shoppingCart.getTotalItems();
+
+    this.vehiclesToSell = this.vehicles.filter(
+      vehicle => !cartIds.includes(vehicle.id)
+    );
+    this.vehiclesToCart = this.vehicles.filter(vehicle =>
+      cartIds.includes(vehicle.id)
+    );
+
+    this._updateCartItems();
   }
 
   _updateCartItems() {
@@ -127,7 +147,6 @@ export class LionGarage extends LitElement {
   }
 
   render() {
-    this.cartIds = shoppingCart.getShoppingCartIds();
     this.itemsInCart = shoppingCart.getTotalItems();
 
     return html`
@@ -144,7 +163,7 @@ export class LionGarage extends LitElement {
         </a>
         <lion-cars
           slot="panel"
-          .cars=${this.vehicles}
+          .cars=${this.vehiclesToSell}
           @car-selected="${(e: CustomEvent) => {
             this.selectedCarId = e.detail.id;
           }}"
@@ -155,9 +174,8 @@ export class LionGarage extends LitElement {
         </a>
         <lion-shopping-cart
           slot="panel"
-          .cars=${this.vehicles}
-          .ids="${this.cartIds}"
-          @update-cart="${() => this._updateCartItems()}"
+          .cars=${this.vehiclesToCart}
+          @update-cart="${() => this._updateCart()}"
         ></lion-shopping-cart></p>
       </lion-tabs>
       <p class="open-wc">
