@@ -44,7 +44,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-/public/*
+#/public/*
 
 # exception to the rule
-!/public/.gitkeep
+#!/public/.gitkeep
