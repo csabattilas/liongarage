@@ -80,6 +80,7 @@ export class LionCars extends LitElement {
       opacity: 0.5;
     }
 
+    .price,
     td:first-child.price {
       text-align: right;
     }
@@ -171,7 +172,7 @@ export class LionCars extends LitElement {
                     </td>
                     <td>${car.model}</td>
                     <td>${car.make}</td>
-                    <td class="price">${car.price}</td>
+                    <td class="price">${car.price.toLocaleString()}</td>
                     <td>
                       <button @click="${() => this._delete(car.id)}">
                         <lion-icon icon-id="lion-garage:misc:bin"></lion-icon>
@@ -181,7 +182,7 @@ export class LionCars extends LitElement {
                 )}
                 <tr>
                   <td colspan="3" class="price">Total:</td>
-                  <td class="price"><strong>${this.total}</strong></td>
+                  <td class="price"><strong>${this.total?.toLocaleString()}</strong></td>
                   <td></td>
                 </tr>
               </table>
