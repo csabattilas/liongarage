@@ -1,38 +1,48 @@
-import {LitElement, html, css, property, customElement, PropertyValues} from 'lit-element';
+import {
+  LitElement,
+  html,
+  css,
+  property,
+  customElement,
+  PropertyValues,
+} from 'lit-element';
 import '@lion/tabs/define';
-import './LionCars';
-import './LionShoppingCart';
-import './LionCar';
+import './LionCars.js';
+import './LionShoppingCart.js';
+import './LionCar.js';
 import gql from 'graphql-tag';
-import {apolloClient} from './apollo/apollo-client';
-import {VehicleSummary} from './types';
-import {shoppingCart} from './utils/ShoppingCartService';
-import './icons/index';
+import { LionTabs } from '@lion/tabs';
+import { apolloClient } from './apollo/apollo-client.js';
+import { VehicleSummary } from './types.js';
+import { shoppingCart } from './utils/ShoppingCartService.js';
+import './icons/index.js';
 import '@lion/icon/define';
-import {LionTabs} from '@lion/tabs';
 
 @customElement('lion-garage')
 export class LionGarage extends LitElement {
   @property() vehicles?: VehicleSummary[] = [];
+
   @property() cartIds: string[] = [];
+
   @property() selectedCarId = '';
+
   @property() itemsInCart: number = 0;
 
   static styles = css`
-    [slot="panel"] {
+    [slot='panel'] {
       border-top: 1px solid;
       padding: 1rem;
       height: calc(100vh - 6.5rem);
       overflow: auto;
     }
 
-    [slot="tab"] {
+    [slot='tab'] {
       padding: 0.5rem 1rem;
       cursor: pointer;
       position: relative;
     }
 
-    [slot="tab"][selected="true"] {
+    [slot='tab'][selected='true'] {
       background-color: #eee;
     }
 
@@ -60,11 +70,11 @@ export class LionGarage extends LitElement {
       top: 3px;
       right: 5px;
     }
-  `
+  `;
 
   constructor() {
     super();
-    let query = gql`
+    const query = gql`
       query {
         allVehicles {
           id
@@ -75,13 +85,15 @@ export class LionGarage extends LitElement {
           price
         }
       }
-    `
-    apolloClient.query({query}).then((results) => {
+    `;
+    apolloClient.query({ query }).then(results => {
       this.vehicles = results.data.allVehicles
         .map((car: { model: string }) => ({
-          ...car
+          ...car,
         }))
-        .sort((a:VehicleSummary, b: VehicleSummary) => a.date_added <= b.date_added ? 1 : -1); // we could use Date transformation here but iso format helps comparing the string
+        .sort((a: VehicleSummary, b: VehicleSummary) =>
+          a.date_added <= b.date_added ? 1 : -1
+        ); // we could use Date transformation here but iso format helps comparing the string
     });
   }
 
@@ -95,19 +107,21 @@ export class LionGarage extends LitElement {
   }
 
   _selectedTabChanged() {
-    const selectedTab = (this.shadowRoot?.querySelector('lion-tabs') as LionTabs).__selectedIndex;
+    const selectedTab = (
+      this.shadowRoot?.querySelector('lion-tabs') as LionTabs
+    ).__selectedIndex;
 
-    window.location.hash = selectedTab + '';
+    window.location.hash = `${selectedTab}`;
   }
 
   protected firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
 
-    const lionTabs = (this.shadowRoot?.querySelector('lion-tabs') as LionTabs)
+    const lionTabs = this.shadowRoot?.querySelector('lion-tabs') as LionTabs;
 
-    if(lionTabs && window.location.hash) {
-      lionTabs.__selectedIndex = +window.location.hash.replace('#','');
-    } else if(lionTabs) {
+    if (lionTabs && window.location.hash) {
+      lionTabs.__selectedIndex = +window.location.hash.replace('#', '');
+    } else if (lionTabs) {
       this._selectedTabChanged();
     }
   }
@@ -119,19 +133,23 @@ export class LionGarage extends LitElement {
     return html`
       <lion-car
         id="${this.selectedCarId}"
-        @close-dialog="${(e:Event) => {this.selectedCarId = ''}}"
+        @close-dialog="${() => {
+          this.selectedCarId = '';
+        }}"
         @car-added-to-cart=${() => this._updateCart()}
       ></lion-car>
-      <lion-tabs @selected-changed="${(e: Event) => this._selectedTabChanged()}}">
-        <a slot="tab" aria-selected="true">
+      <lion-tabs @selected-changed="${() => this._selectedTabChanged()}}">
+        <a slot="tab" aria-selected="true" href="#0">
           <lion-icon icon-id="lion-garage:misc:car"></lion-icon>
         </a>
         <lion-cars
           slot="panel"
           .cars=${this.vehicles}
-          @car-selected="${(e: CustomEvent) => this.selectedCarId = e.detail.id}"
+          @car-selected="${(e: CustomEvent) => {
+            this.selectedCarId = e.detail.id;
+          }}"
         ></lion-cars></p>
-        <a slot="tab">
+        <a slot="tab" href="#1">
           <lion-icon icon-id="lion-garage:misc:shoppingCart"></lion-icon>
           <span class="badge">${this.itemsInCart}</span>
         </a>

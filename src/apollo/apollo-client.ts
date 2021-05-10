@@ -4,7 +4,7 @@ const cache = new InMemoryCache();
 
 export const apolloClient = new ApolloClient({
   // Provide required constructor fields
-  cache: cache,
+  cache,
   uri: 'http://localhost:4000/',
 
   // Provide some optional constructor fields
@@ -16,4 +16,3 @@ export const apolloClient = new ApolloClient({
     },
   },
 });
-

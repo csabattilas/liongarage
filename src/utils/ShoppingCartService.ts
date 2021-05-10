@@ -1,11 +1,14 @@
 class ShoppingCartService {
-  static sKey = 'shoppingCart'
+  static sKey = 'shoppingCart';
 
-  get shoppingCart(): {[key: string]: number} {
-    const shoppingCartCarIdsJSON = localStorage.getItem(ShoppingCartService.sKey)
+  /* eslint-disable class-methods-use-this */
+  get shoppingCart(): { [key: string]: number } {
+    const shoppingCartCarIdsJSON = localStorage.getItem(
+      ShoppingCartService.sKey
+    );
     let shoppingCart = {};
 
-    if(shoppingCartCarIdsJSON) {
+    if (shoppingCartCarIdsJSON) {
       shoppingCart = JSON.parse(shoppingCartCarIdsJSON);
     }
 
@@ -21,31 +24,40 @@ class ShoppingCartService {
   }
 
   deleteItemFromShoppingCart(id: string) {
-    const shoppingCart = this.shoppingCart;
+    const { shoppingCart } = this;
     delete shoppingCart[id];
 
-    localStorage.setItem(ShoppingCartService.sKey, JSON.stringify(shoppingCart));
+    localStorage.setItem(
+      ShoppingCartService.sKey,
+      JSON.stringify(shoppingCart)
+    );
   }
 
   addToShoppingCart(id: string) {
-    const shoppingCart = this.shoppingCart;
+    const { shoppingCart } = this;
 
     shoppingCart[id] = shoppingCart[id] ? shoppingCart[id] + 1 : 1;
-    localStorage.setItem(ShoppingCartService.sKey, JSON.stringify(shoppingCart));
+    localStorage.setItem(
+      ShoppingCartService.sKey,
+      JSON.stringify(shoppingCart)
+    );
   }
 
   getTotalItems() {
-    return Object.keys(this.shoppingCart).reduce((acc, item) => {
-        return acc + this.shoppingCart[item];
-      }
-    , 0);
+    return Object.keys(this.shoppingCart).reduce(
+      (acc, item) => acc + this.shoppingCart[item],
+      0
+    );
   }
 
   updateCount(id: string, value: number) {
-    const shoppingCart = this.shoppingCart;
+    const { shoppingCart } = this;
 
     shoppingCart[id] = value;
-    localStorage.setItem(ShoppingCartService.sKey, JSON.stringify(shoppingCart));
+    localStorage.setItem(
+      ShoppingCartService.sKey,
+      JSON.stringify(shoppingCart)
+    );
   }
 }
 

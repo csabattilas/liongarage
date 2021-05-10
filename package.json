@@ -7,7 +7,11 @@
   "scripts": {
     "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\"",
     "build": "tsc && rollup -c",
-    "start-server": "cd apollo-server && npm start"
+    "start-server": "cd apollo-server && npm start",
+    "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
+    "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
+    "test": "tsc && wtr --coverage",
+    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\""
   },
   "dependencies": {
     "@apollo-elements/lit-apollo": "^3.3.0",
@@ -20,17 +24,27 @@
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
     "big.js": "^6.1.1",
-    "fast-json-stable-stringify": "./extras/fast-json-stable-stringify-2.1.0.tgz",
+    "fast-json-stable-stringify": "file:extras/fast-json-stable-stringify-2.1.0.tgz",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "lit-element": "^2.5.0",
     "lit-html": "^1.4.0"
   },
   "devDependencies": {
+    "@open-wc/eslint-config": "^4.3.0",
+    "@open-wc/testing": "^2.5.33",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
     "@web/dev-server": "^0.1.17",
+    "@web/test-runner": "^0.12.20",
     "concurrently": "^5.3.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^7.2.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
     "rollup": "^2.47.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-minify-html-literals": "^1.2.6",
@@ -41,5 +55,45 @@
   "engines": {
     "node": ">=14 < 15",
     "npm": ">=6.14.2 < 7"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error"
+      ],
+      "import/no-unresolved": "off",
+      "import/extensions": [
+        "error",
+        "always",
+        {
+          "ignorePackages": true
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

@@ -1,69 +1,80 @@
-import {customElement, html, LitElement, property, css} from 'lit-element';
-import {Vehicle} from './types';
+import { customElement, html, LitElement, property, css } from 'lit-element';
 import gql from 'graphql-tag';
-import {apolloClient} from './apollo/apollo-client';
+import { Vehicle } from './types.js';
+import { apolloClient } from './apollo/apollo-client.js';
 import '@lion/dialog/define';
-import {shoppingCart} from './utils/ShoppingCartService';
+import { shoppingCart } from './utils/ShoppingCartService.js';
 
 const query = gql`
-    query vehicleQuery($id: ID!){
-      vehicle(id: $id){
-        model
-        make
-        licensed
-        year_model
-        price
-        location {
-          warehouse {
-            long
-            lat
-          }
-          location
+  query vehicleQuery($id: ID!) {
+    vehicle(id: $id) {
+      model
+      make
+      licensed
+      year_model
+      price
+      location {
+        warehouse {
+          long
+          lat
         }
+        location
       }
     }
-  `
+  }
+`;
 @customElement('lion-car')
 export class LionCar extends LitElement {
   @property() vehicle?: Vehicle;
 
   @property({
     type: String, //
-  }) id = '';
+  })
+  id = '';
 
   static styles = css`
     button {
       background: transparent;
       margin-left: auto;
     }
-  `
+  `;
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    /* eslint-disable  wc/guard-super-call */
     super.attributeChangedCallback(name, oldValue, newValue);
 
     switch (name) {
-     case 'id':  if (newValue) {
-        this.shadowRoot?.querySelector('button')?.click(); // no need to safeguard fastclick-ing or enter, as the dialog will prevent that so keeping it light without rxjs
-        apolloClient.query({
-          query, variables: {id: newValue}
-        }).then((results) => {
-          this.vehicle = results.data?.vehicle;
-        });
-      }
+      case 'id':
+        if (newValue) {
+          this.shadowRoot?.querySelector('button')?.click(); // no need to safeguard fastclick-ing or enter, as the dialog will prevent that so keeping it light without rxjs
+          apolloClient
+            .query({
+              query,
+              variables: { id: newValue },
+            })
+            .then(results => {
+              this.vehicle = results.data?.vehicle;
+            });
+        }
+        break;
+
+      default: //
     }
   }
 
-  _closeDialog(e:MouseEvent) {
-    const closeEvent = new CustomEvent('close-dialog', {bubbles: true});
+  _closeDialog(e: MouseEvent) {
+    const closeEvent = new CustomEvent('close-dialog', { bubbles: true });
     this.dispatchEvent(closeEvent);
 
-    e.target?.dispatchEvent(new Event('close-overlay', { bubbles: true }))
+    e.target?.dispatchEvent(new Event('close-overlay', { bubbles: true }));
   }
 
   _addToCart() {
     shoppingCart.addToShoppingCart(this.id);
 
-    const addToCartEvent = new CustomEvent('car-added-to-cart', {bubbles: true});
+    const addToCartEvent = new CustomEvent('car-added-to-cart', {
+      bubbles: true,
+    });
     this.dispatchEvent(addToCartEvent);
   }
 
@@ -78,7 +89,7 @@ export class LionCar extends LitElement {
         <div slot="content" class="dialog">
           <button
             class="close-button"
-            @click=${(e:MouseEvent) => this._closeDialog(e)}
+            @click=${(e: MouseEvent) => this._closeDialog(e)}
           >
             x
           </button>
@@ -87,7 +98,11 @@ export class LionCar extends LitElement {
             <dd><label>Make:</label> ${this.vehicle?.make}</dd>
             <dd><label>Year:</label> ${this.vehicle?.year_model}</dd>
             <dd><label>Price:</label> ${this.vehicle?.price}</dd>
-            <dd><label>Location in warehouse</label> long: ${this.vehicle?.location?.warehouse?.long}, lat:${this.vehicle?.location?.warehouse?.lat} <br>&nbsp; &nbsp;at ${this.vehicle?.location?.location}</dd>
+            <dd><label>Location in warehouse</label> long: ${
+              this.vehicle?.location?.warehouse?.long
+            }, lat:${
+      this.vehicle?.location?.warehouse?.lat
+    } <br>&nbsp; &nbsp;at ${this.vehicle?.location?.location}</dd>
           </dl>
           <button
             @click="${() => this._addToCart()}"
@@ -97,6 +112,6 @@ export class LionCar extends LitElement {
                 add to cart
           </button>
         </div>
-      </lion-dialog>`
+      </lion-dialog>`;
   }
 }

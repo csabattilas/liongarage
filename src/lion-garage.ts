@@ -1,1 +1,1 @@
-import './LionGarage';
+import './LionGarage.js';

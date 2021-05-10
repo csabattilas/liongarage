@@ -1,14 +1,16 @@
-import {LitElement, html, css, property, customElement} from 'lit-element';
-import { Vehicle } from './types';
+import { LitElement, html, css, property, customElement } from 'lit-element';
+import { Vehicle } from './types.js';
 import '@lion/dialog/define';
 
 @customElement('lion-cars')
 export class LionCars extends LitElement {
-  @property() cars:Array<Vehicle> = [];
+  @property() cars: Array<Vehicle> = [];
+
   @property() selectedId: string = '';
 
   static styles = css`
-    td,th {
+    td,
+    th {
       padding: 0.5rem;
     }
 
@@ -30,8 +32,7 @@ export class LionCars extends LitElement {
     }
 
     td:last-child,
-    td:first-child
-    {
+    td:first-child {
       text-align: center;
     }
 
@@ -53,7 +54,10 @@ export class LionCars extends LitElement {
   `;
 
   setSelectedId(id: string) {
-    const selectEvent = new CustomEvent('car-selected', {bubbles: true, detail: {id}});
+    const selectEvent = new CustomEvent('car-selected', {
+      bubbles: true,
+      detail: { id },
+    });
     this.dispatchEvent(selectEvent);
   }
 
@@ -61,27 +65,34 @@ export class LionCars extends LitElement {
     return html`
       <main>
         <h1>cars</h1>
-        ${this.cars?.length ?
-        html`<table>
-          <tr>
-            <th>Year added</th>
-            <th>Model</th>
-            <th>Make</th>
-            <th></th>
-          </tr>
-          ${this.cars.map(car => html`
-            <tr>
-              <td>${car.date_added}</td>
-              <td>${car.model}</td>
-              <td>${car.make}</td>
-              <td>
-                <button @click="${() => this.setSelectedId(car.id)}" ?disabled="${!car.licensed}" aria-label="${car.licensed ? 'show details': 'details not available'}">
-                    <lion-icon icon-id="lion-garage:misc:file"></lion-icon>
-                </button>
-                </td>
-            </tr>`
-          )}
-        </table>` : html`<!-- todo implement progress indicator -->`}
+        ${this.cars?.length
+          ? html`<table>
+              <tr>
+                <th>Year added</th>
+                <th>Model</th>
+                <th>Make</th>
+                <th></th>
+              </tr>
+              ${this.cars.map(
+                car => html` <tr>
+                  <td>${car.date_added}</td>
+                  <td>${car.model}</td>
+                  <td>${car.make}</td>
+                  <td>
+                    <button
+                      @click="${() => this.setSelectedId(car.id)}"
+                      ?disabled="${!car.licensed}"
+                      aria-label="${car.licensed
+                        ? 'show details'
+                        : 'details not available'}"
+                    >
+                      <lion-icon icon-id="lion-garage:misc:file"></lion-icon>
+                    </button>
+                  </td>
+                </tr>`
+              )}
+            </table>`
+          : html`<!-- todo implement progress indicator -->`}
       </main>
     `;
   }
