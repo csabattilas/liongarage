@@ -33,6 +33,7 @@ The used npm version is `6.13.4`.
 Obs: 
 * Development was conducted using node `v14.16.1` with npm `6.14.22`. I recommend using the same for node at least.
 * The testing browser was Chrome v90.
+
 Run client and server in separate terminal windows.
 
 ### Run server
